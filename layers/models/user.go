@@ -3,46 +3,16 @@ package models
 import (
 	"gorm.io/gorm"
 	"paysee2/constants"
+	// "your/project/path/constants" // اگر از enum برای نقش‌ها استفاده می‌کنید
 )
 
+// User نشان‌دهنده کاربر سیستم (طلافروش) است که لاگین می‌کند.
 type User struct {
 	gorm.Model
-	Email        string         `json:"email"`
-	Username     string         `json:"username"`
-	Role         constants.Role `json:"role"`
-	PasswordHash string         `json:"passwordHash"`
-}
-
-type Creditor struct {
-	gorm.Model
-	FirstName        string `json:"firstName"`
-	LastName         string `json:"lastName"`
-	PhoneNumber      string `json:"phoneNumber"`
-	TotalMoney       int    `json:"totalMoney"`
-	CreditCardNumber string `json:"creditCard"`
-	UserID           uint   `json:"userId"`
-	User             User
-}
-type PaymentCreditor struct {
-	gorm.Model
-	CreditorID uint `json:"creditorID"`
-	Pay        uint `json:"pay"`
-	Creditor   Creditor
-}
-
-type Debtor struct {
-	gorm.Model
-	TotalMoney  int    `json:"totalMoney"`
-	FirstName   string `json:"firstName"`
-	LastName    string `json:"lastName"`
-	PhoneNumber string `json:"phoneNumber"`
-	UserID      uint   `json:"userId"`
-	User        User
-}
-
-type PaymentDebtor struct {
-	gorm.Model
-	DebtorID uint `json:"debtorID"`
-	Pay      uint `json:"pay"`
-	Debtor   Debtor
+	Email    string         `json:"email" gorm:"uniqueIndex"`
+	Username string         `json:"username" gorm:"uniqueIndex"`
+	Role     constants.Role `json:"role"`
+	// هروقت خواستید اطلاعات کاربر را در API برگردانید، این فیلد ارسال نمی‌شود.
+	PasswordHash string     `json:"-"`
+	Customer     []Customer `json:"customer"`
 }

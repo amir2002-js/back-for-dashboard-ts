@@ -2,30 +2,39 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"paysee2/handlers/userHandlers"
+	"paysee2/handlers"
+	"paysee2/middlewares"
 )
 
-func Router(r *gin.Engine, userHandlers *userHandlers.UserHandlers) {
+func Router(r *gin.Engine, handlers *handlers.Handlers) {
 	api := r.Group("/api")
 	{
+		api.POST("/refreshToken", handlers.AccessTokenHandler)
 		register := api.Group("/register")
 		{
-			register.POST("/", userHandlers.CreateUser)
-			register.POST("/verify", nil)
+			register.POST("/", handlers.UserHandler.RegisterHandler)
 		}
 
 		login := api.Group("/login")
 		{
-			login.POST("/", nil)
-			login.POST("/verify", nil)
+			login.POST("/", handlers.UserHandler.LoginHandler)
 		}
 
-		kyc := api.Group("/kyc")
+		admin := api.Group("/admin")
+		admin.Use(middlewares.CheckWho(handlers.DB))
 		{
-			kyc.POST("/", nil)
-			kyc.POST("/status", nil)
+			admin.GET("/users", handlers.UserHandler.GetAllUsersHandler)
 		}
 
-		api.POST("/reset-password", nil)
+		simpleUser := api.Group("/simpleUser")
+		simpleUser.Use(middlewares.CheckWho(handlers.DB))
+		{
+			customers := simpleUser.Group("/customers")
+			{
+				customers.GET("/:customerType", handlers.CustomerHandler.GetCustomerByTypeHandler)
+				customers.GET("/:id", handlers.CustomerHandler.GetCustomerByIdHandler)
+				customers.POST("/", handlers.CustomerHandler.CreateCustomerHandler)
+			}
+		}
 	}
 }

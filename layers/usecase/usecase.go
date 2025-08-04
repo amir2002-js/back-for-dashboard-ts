@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"paysee2/constants"
 	"paysee2/layers/models"
 )
 
@@ -8,19 +9,13 @@ import (
 
 type UserRepository interface {
 	CreateUser(user *models.User) error
-	UpdateUser() error
-	DeleteUser(userID int) error
-	FindByUserID(id int) error
+	GetAllUsers() (*[]models.User, error)
 }
 
-type LoginHistoryRepository interface {
-	CreateLoginHistory() error
-}
-
-type TransActionRepository interface {
-	CreateTransAction() error
-}
-
-type KYCRepository interface {
-	CreateKYC() error
+type CustomerRepository interface {
+	CreateCustomer(customer *models.Customer) error
+	GetAllCustomers() (*[]models.Customer, error)
+	GetCustomersByType(t constants.CustomerType, uId int) (*[]models.Customer, error)
+	UpdateCustomer(id int, customer *models.Customer) (*models.Customer, error)
+	GetCustomerById(id int) (*models.Customer, error)
 }

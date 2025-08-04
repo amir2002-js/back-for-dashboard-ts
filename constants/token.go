@@ -1,8 +1,8 @@
 package constants
 
 const (
-	TokenNameAccess  = "jwt-access"
-	TokenNameRefresh = "jwt-refresh"
+	TokenNameAccess  = "jwtTkn-access"
+	TokenNameRefresh = "jwtTkn-refresh"
 	AccessTknEnv     = "ACCESS_TOKEN"
 	RefreshTknEnv    = "REFRESH_TOKEN"
 )
