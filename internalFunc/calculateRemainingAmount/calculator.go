@@ -1,22 +1,32 @@
 package calculateRemainingAmount
 
 import (
+	"errors"
+	"github.com/shopspring/decimal"
 	"gorm.io/gorm"
+	"paysee2/constants"
 	"paysee2/layers/models"
 )
 
-func CalculatorAmount(db *gorm.DB, idCustomer int) (int, error) {
+func CalculatorAmount(db *gorm.DB, idCustomer int, accountType constants.CustomerAccountType) ([]models.Payment, decimal.Decimal, error) {
 	var customer models.Customer
 	err := db.Preload("Payment").First(&customer, idCustomer).Error
 	if err != nil {
-		return 0, err
+		return nil, decimal.Zero, err
 	}
-	totalPaid := 0
+	totalPaid := decimal.NewFromInt(0)
 	for _, value := range customer.Payment {
-		totalPaid += int(value.Amount)
+		totalPaid = totalPaid.Add(value.Amount)
 	}
 
-	remainingAmount := int(customer.Totality) - totalPaid
+	var remainingAmount decimal.Decimal
+	if accountType == constants.MonetaryAccount {
+		remainingAmount = customer.Totality.Sub(totalPaid)
+	} else if accountType == constants.WeightAccount {
+		remainingAmount = customer.Weight.Sub(totalPaid)
+	} else {
+		return nil, decimal.Zero, errors.New("invalid accountType")
+	}
 
-	return remainingAmount, nil
+	return customer.Payment, remainingAmount, nil
 }

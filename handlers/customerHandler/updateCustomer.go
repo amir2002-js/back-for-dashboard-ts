@@ -20,7 +20,7 @@ func (handler *CustomerHandlers) updateCustomer(c *gin.Context) {
 		LastName    string  `json:"lastName"`
 		PhoneNumber string  `json:"phoneNumber"`
 		Weight      float64 `json:"weight"`
-		Totality    uint    `json:"totality"`
+		Totality    float64 `json:"totality"`
 		Description string  `json:"description"`
 	}{}
 

@@ -13,3 +13,17 @@ const (
 	Debtor   CustomerType = iota // مشتری بدهکار
 	Creditor                     // مشتری طلب کار
 )
+
+type CustomerAccountType int
+
+const (
+	MonetaryAccount CustomerAccountType = iota
+	WeightAccount
+)
+
+type CustomerStatus int
+
+const (
+	NotSettled CustomerStatus = iota
+	Settled
+)

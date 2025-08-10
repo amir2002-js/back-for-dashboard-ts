@@ -19,3 +19,9 @@ type CustomerRepository interface {
 	UpdateCustomer(id int, customer *models.Customer) (*models.Customer, error)
 	GetCustomerById(id int) (*models.Customer, error)
 }
+
+type PaymentRepository interface {
+	CreatePayment(payment *models.Payment) error
+	UpdatePayment(new *models.Payment) error
+	DeletePayment(payment *models.Payment) error
+}

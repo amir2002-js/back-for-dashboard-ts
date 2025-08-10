@@ -9,13 +9,12 @@ import (
 	"net/http"
 	"os"
 	"paysee2/constants"
-	"paysee2/internalFunc/checkValidations"
 	"strings"
 )
 
 func CheckWho(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		log.Println("------- CheckWho is started --------")
+
 		auth := c.GetHeader("Authorization")
 		tokenSTR := strings.TrimPrefix(auth, "Bearer ")
 		if auth == "" || tokenSTR == "" {
@@ -52,17 +51,7 @@ func CheckWho(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		log.Println("------- CheckWho is finished --------")
-		userIDUint := int(claim.UserId)
-
-		user, err := checkValidations.CheckID(userIDUint, db)
-		if err != nil || user == nil {
-			c.JSON(http.StatusForbidden, gin.H{"error": "user not exist"})
-			c.Abort()
-			return
-		}
-
-		c.Set("userId", userIDUint)
+		c.Set("userId", claim.UserId)
 		c.Set("role", claim.Role)
 		c.Set("exp", claim.ExpiresAt.Time)
 		c.Next()

@@ -9,6 +9,7 @@ import (
 	"paysee2/constants"
 	"paysee2/handlers"
 	"paysee2/handlers/customerHandler"
+	"paysee2/handlers/paymentHandler"
 	"paysee2/handlers/userHandlers"
 	"paysee2/internalFunc/configs"
 	"paysee2/layers/models"
@@ -50,7 +51,11 @@ func main() {
 	customerServ := services.NewCustomerService(customerRepo)
 	cH := customerHandler.NewCustomerHandlers(*customerServ, db)
 
-	handler := handlers.NewHandlers(uH, cH, db)
+	paymentRepo := repository.NewGormDB(db)
+	payServ := services.NewPaymentService(paymentRepo)
+	pH := paymentHandler.NewPaymentHandler(*payServ, db)
+
+	handler := handlers.NewHandlers(uH, cH, pH, db)
 
 	r := gin.Default()
 	r.RedirectTrailingSlash = false

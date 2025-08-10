@@ -20,7 +20,7 @@ func (database *GormDB) GetAllCustomers() (*[]models.Customer, error) {
 func (database *GormDB) GetCustomersByType(t constants.CustomerType, uId int) (*[]models.Customer, error) {
 	db := database.DB
 	var customers []models.Customer
-	result := db.Where("user_id = ? And type = ?", uId, t).Find(&customers)
+	result := db.Where("user_id = ? And customer_type = ?", uId, t).Find(&customers)
 	if result.Error != nil {
 		return nil, result.Error
 	}

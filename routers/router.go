@@ -31,9 +31,16 @@ func Router(r *gin.Engine, handlers *handlers.Handlers) {
 		{
 			customers := simpleUser.Group("/customers")
 			{
-				customers.GET("/:customerType", handlers.CustomerHandler.GetCustomerByTypeHandler)
-				customers.GET("/:id", handlers.CustomerHandler.GetCustomerByIdHandler)
+				customers.GET("/get-all/:customerType", handlers.CustomerHandler.GetCustomerByTypeHandler)
+				customers.GET("/get-by-id/:id", handlers.CustomerHandler.GetCustomerByIdHandler)
 				customers.POST("/", handlers.CustomerHandler.CreateCustomerHandler)
+			}
+
+			payments := simpleUser.Group("/payments")
+			{
+				payments.POST("/:customerID", handlers.PaymentHandler.CreatePaymentHandler)
+				payments.DELETE("/:paymentID", handlers.PaymentHandler.DeletePaymentHandler)
+				payments.PUT("/:paymentID", handlers.PaymentHandler.UpdatePaymentHandler)
 			}
 		}
 	}

@@ -32,13 +32,14 @@ func (handler *CustomerHandlers) GetCustomerByIdHandler(c *gin.Context) {
 		return
 	}
 
-	remainingAmount, err := calculateRemainingAmount.CalculatorAmount(handler.db, intIdCustomer)
+	paymentArr, remainingAmount, err := calculateRemainingAmount.CalculatorAmount(handler.db, intIdCustomer, customer.AccountType)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	customer.RemainingAmount = remainingAmount
+	customer.Payment = paymentArr
 
 	c.JSON(http.StatusOK, customer)
 }
