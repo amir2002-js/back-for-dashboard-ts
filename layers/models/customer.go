@@ -20,15 +20,15 @@ type Customer struct {
 	Payment         []Payment                     `json:"payment"`
 	Description     string                        `json:"description" gorm:"type:text"`
 	UserID          uint                          `json:"userId"`
-	RemainingAmount float64                       `json:"remainingAmount" gorm:"-"`
+	RemainingAmount decimal.Decimal               `json:"remainingAmount" gorm:"-"`
 }
 
 type ClaimCustomer struct {
 	FirstName    string                        `json:"firstName" binding:"required"`
 	LastName     string                        `json:"lastName" binding:"required"`
 	PhoneNumber  string                        `json:"phoneNumber" binding:"required"`
-	Weight       float64                       `json:"weight"`
-	Totality     float64                       `json:"totality" binding:"required"`
+	Weight       decimal.Decimal               `json:"weight"`
+	Totality     decimal.Decimal               `json:"totality" binding:"required"`
 	Description  string                        `json:"description"`
 	CustomerType constants.CustomerType        `json:"customerType"`
 	Status       constants.CustomerStatus      `json:"status"`

@@ -2,6 +2,7 @@ package customerHandler
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/shopspring/decimal"
 	"net/http"
 	"paysee2/layers/models"
 	"strconv"
@@ -16,12 +17,12 @@ func (handler *CustomerHandlers) updateCustomer(c *gin.Context) {
 	}
 
 	claimCustomer := struct {
-		FirstName   string  `json:"firstName"`
-		LastName    string  `json:"lastName"`
-		PhoneNumber string  `json:"phoneNumber"`
-		Weight      float64 `json:"weight"`
-		Totality    float64 `json:"totality"`
-		Description string  `json:"description"`
+		FirstName   string          `json:"firstName"`
+		LastName    string          `json:"lastName"`
+		PhoneNumber string          `json:"phoneNumber"`
+		Weight      decimal.Decimal `json:"weight"`
+		Totality    decimal.Decimal `json:"totality"`
+		Description string          `json:"description"`
 	}{}
 
 	err = c.ShouldBind(&claimCustomer)
