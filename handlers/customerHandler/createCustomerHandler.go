@@ -18,7 +18,7 @@ func (handler *CustomerHandlers) CreateCustomerHandler(c *gin.Context) {
 	cCustomer := models.ClaimCustomer{}
 
 	err := c.ShouldBind(&cCustomer)
-	if err != nil && (cCustomer.Weight > 0 || cCustomer.Totality > 0) {
+	if err != nil && (cCustomer.Weight.IsPositive() || cCustomer.Totality.IsPositive()) {
 		log.Println("invalid binding , error is => ", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
